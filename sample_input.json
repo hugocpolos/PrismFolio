@@ -1,0 +1,47 @@
+{
+   "investment_groups":[
+      {
+         "name":"Brazil stocks",
+         "target_participation":40.0,
+         "assets":[
+            {
+               "code":"BBAS3",
+               "quantity":0,
+               "target_participation":100.0
+            }
+         ]
+      },
+      {
+         "name":"Brazil Real State Funds",
+         "target_participation":40.0,
+         "assets":[
+            {
+               "code":"MXRF11",
+               "quantity":100,
+               "target_participation":50.0
+            },
+            {
+               "code":"BTLG11",
+               "quantity":15,
+               "target_participation":50.0
+            }
+         ]
+      },
+      {
+         "name":"US stocks",
+         "target_participation":20.0,
+         "assets":[
+            {
+               "code":"AAPL34",
+               "quantity":5,
+               "target_participation":60.0
+            },
+            {
+               "code":"COCA34",
+               "quantity":4,
+               "target_participation":40.0
+            }
+         ]
+      }
+   ]
+}
