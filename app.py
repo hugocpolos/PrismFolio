@@ -37,9 +37,11 @@ def display_suggestion(suggestion: WalletInvestmentSuggestion):
 def main():
     args = argument_parser()
     stock_price_acquisition_function = brapi.get_current_stock_price
+    stock_price_earning_acquisitiong_function = brapi.get_price_eanings
 
     if args.dry_run:
         stock_price_acquisition_function = dry_run_function
+        stock_price_earning_acquisitiong_function = dry_run_function
 
     with open(args.input_data) as fp:
         input_dict = json.load(fp)
@@ -47,6 +49,7 @@ def main():
     try:
         wallet = Wallet.from_dict(input_dict)
         wallet.update_asset_values(stock_price_acquisition_function)
+        wallet.update_asset_price_earnings(stock_price_earning_acquisitiong_function)
         suggestion = WalletInvestmentSuggestion(wallet, args.new_investment_value)
     except Exception as err:
         logging.error(err)

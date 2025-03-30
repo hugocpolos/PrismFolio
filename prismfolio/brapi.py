@@ -29,4 +29,4 @@ def get_price_earning(stock_code):
                                  f"\n\t{response.json()}")
 
     data = response.json()
-    return data.get('results')[0].get('priceEarnings')
+    return data.get('results')[0].get('priceEarnings', 0.0)

@@ -25,6 +25,10 @@ class Wallet:
         for investment_group in self._investment_group:
             investment_group.update_asset_values(pricing_function)
 
+    def update_asset_price_earnings(self, price_earnings_function):
+        for investment_group in self._investment_group:
+            investment_group.update_asset_price_earnings(price_earnings_function)
+
     @classmethod
     def from_json(cls, json_data):
         return cls.from_dict(json.loads(json_data))

@@ -19,6 +19,7 @@ class Asset(TargetParticipation):
         self._code = code
         self._quantity = quantity
         self._price = None
+        self._price_earnings = 0.0
         self._current_participation = 0.0
 
     # Public
@@ -31,6 +32,9 @@ class Asset(TargetParticipation):
                 f'{self._code} has no price yet. Call the method update_price() first.')
 
         return self._price
+
+    def get_price_earnings(self):
+        return self._price_earnings
 
     def get_code(self):
         return self._code
@@ -49,6 +53,14 @@ class Asset(TargetParticipation):
             raise AssetPricingError(f"It is not possible to get the price of {self._code}. "
                                     f"{err}")
         return self._price
+
+    def update_price_earnings(self, price_earnings_function):
+        try:
+            self._price_earnings = price_earnings_function(self._code)
+        except Exception as err:
+            raise AssetPricingError(f"It is not possible to get the price earning of {self._code}. "
+                                    f"{err}")
+        return self._price_earnings
 
     def get_total_amount(self):
         return self.get_price() * self.get_quantity()
