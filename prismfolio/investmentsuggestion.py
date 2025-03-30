@@ -59,6 +59,9 @@ class _AssetSuggestion(_BaseSuggestion):
     def get_suggested_shares_buying(self):
         return self.get_suggested_investment() // self._item.get_price()
 
+    def get_asset(self):
+        return self._item
+
     def __repr__(self):
         return f"""
             Asset: {self._item.get_code()}
@@ -85,6 +88,9 @@ class _InvestmentGroupSuggestion(_BaseSuggestion, _BaseSuggestionDict):
         for item, suggestion in self._suggestion.items():
             suggestion.set_new_contribution(contribution_value)
             suggestion._calculate_actual_investing(_total_ideal_investing)
+
+    def get_investment_group(self):
+        return self._item
 
     def __repr__(self):
         return f"""
