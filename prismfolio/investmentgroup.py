@@ -3,6 +3,7 @@ from prismfolio.targetparticipation import TargetParticipation
 
 import json
 import logging
+import math
 
 
 class InvestmentGroup(TargetParticipation):
@@ -51,6 +52,9 @@ class InvestmentGroup(TargetParticipation):
             _investment_group.add_asset(Asset.from_dict(asset))
 
         _total_asset_participation = _investment_group._get_total_asset_target_participation()
+
+        if math.isclose(_total_asset_participation, 100.0, abs_tol=0.001):
+            return _investment_group
 
         if _total_asset_participation > 100.0:
             logging.warning("The total asset participation on group '%s' is %.2f%%, which is "
