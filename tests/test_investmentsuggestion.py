@@ -146,3 +146,123 @@ def test_suggestion_with_multiple_group_and_assets():
     assert wallet_suggestion[g1][a1].get_suggested_shares_buying() == 0
     assert wallet_suggestion[g2][a2].get_suggested_investment() == 100
     assert wallet_suggestion[g2][a2].get_suggested_shares_buying() == 10
+
+
+def test_suggestion_no_remainder_single_group_single_asset():
+    w = Wallet()
+    g1 = InvestmentGroup('G1', 100.0)
+    a1 = Asset('A1', 0, 100.0)
+    g1.add_asset(a1)
+    w.add_investment_group(g1)
+    w.update_asset_values(lambda x: 1.0)
+
+    wallet_suggestion = WalletInvestmentSuggestion(w, 100)
+    assert wallet_suggestion.get_remainder() == 0
+    assert wallet_suggestion[g1].get_remainder() == 0
+    assert wallet_suggestion[g1][a1].get_remainder() == 0
+
+
+def test_suggestion_no_remainder_single_group_multiple_asset():
+    w = Wallet()
+    g1 = InvestmentGroup('G1', 100.0)
+    a1 = Asset('A1', 0, 30.0)
+    a2 = Asset('A2', 0, 70.0)
+    g1.add_asset(a1)
+    g1.add_asset(a2)
+    w.add_investment_group(g1)
+    w.update_asset_values(lambda x: 1.0)
+
+    wallet_suggestion = WalletInvestmentSuggestion(w, 100)
+    assert wallet_suggestion.get_remainder() == 0
+    assert wallet_suggestion[g1].get_remainder() == 0
+    assert wallet_suggestion[g1][a1].get_remainder() == 0
+    assert wallet_suggestion[g1][a2].get_remainder() == 0
+
+
+def test_suggestion_no_remainder_multiple_group():
+    w = Wallet()
+    g1 = InvestmentGroup('G1', 50.0)
+    a1 = Asset('A1', 0, 50.0)
+    a2 = Asset('A2', 0, 50.0)
+    g1.add_asset(a1)
+    g1.add_asset(a2)
+
+    g2 = InvestmentGroup('G2', 50.0)
+    a3 = Asset('A3', 0, 25.0)
+    a4 = Asset('A4', 0, 25.0)
+    a5 = Asset('A5', 0, 25.0)
+    a6 = Asset('A6', 0, 25.0)
+    g2.add_asset(a3)
+    g2.add_asset(a4)
+    g2.add_asset(a5)
+    g2.add_asset(a6)
+
+    w.add_investment_group(g1)
+    w.add_investment_group(g2)
+
+    w.update_asset_values(lambda x: 1.0)
+
+    wallet_suggestion = WalletInvestmentSuggestion(w, 200)
+    assert wallet_suggestion.get_remainder() == 0
+    assert wallet_suggestion[g1].get_remainder() == 0
+    assert wallet_suggestion[g2].get_remainder() == 0
+    assert wallet_suggestion[g1][a1].get_remainder() == 0
+    assert wallet_suggestion[g1][a2].get_remainder() == 0
+    assert wallet_suggestion[g2][a3].get_remainder() == 0
+    assert wallet_suggestion[g2][a4].get_remainder() == 0
+    assert wallet_suggestion[g2][a5].get_remainder() == 0
+    assert wallet_suggestion[g2][a6].get_remainder() == 0
+
+
+def test_suggestion_remainder_single_group_single_asset():
+    w = Wallet()
+    g1 = InvestmentGroup('G1', 100.0)
+    a1 = Asset('A1', 0, 100.0)
+    g1.add_asset(a1)
+    w.add_investment_group(g1)
+    w.update_asset_values(lambda x: 5)
+
+    wallet_suggestion = WalletInvestmentSuggestion(w, 5)
+    assert wallet_suggestion.get_remainder() == 0
+    assert wallet_suggestion[g1].get_remainder() == 0
+    assert wallet_suggestion[g1][a1].get_remainder() == 0
+
+    wallet_suggestion = WalletInvestmentSuggestion(w, 54)
+    assert wallet_suggestion.get_remainder() == 4
+    assert wallet_suggestion[g1].get_remainder() == 4
+    assert wallet_suggestion[g1][a1].get_remainder() == 4
+
+    wallet_suggestion = WalletInvestmentSuggestion(w, 10.5)
+    assert wallet_suggestion.get_remainder() == 0.50
+    assert wallet_suggestion[g1].get_remainder() == 0.50
+    assert wallet_suggestion[g1][a1].get_remainder() == 0.50
+
+    wallet_suggestion = WalletInvestmentSuggestion(w, 41.5)
+    assert wallet_suggestion.get_remainder() == 1.50
+    assert wallet_suggestion[g1].get_remainder() == 1.50
+    assert wallet_suggestion[g1][a1].get_remainder() == 1.50
+
+    wallet_suggestion = WalletInvestmentSuggestion(w, 0)
+    assert wallet_suggestion.get_remainder() == 0
+    assert wallet_suggestion[g1].get_remainder() == 0
+    assert wallet_suggestion[g1][a1].get_remainder() == 0
+
+    wallet_suggestion = WalletInvestmentSuggestion(w, 1.0)
+    assert wallet_suggestion.get_remainder() == 1
+    assert wallet_suggestion[g1].get_remainder() == 1
+    assert wallet_suggestion[g1][a1].get_remainder() == 1
+
+    wallet_suggestion = WalletInvestmentSuggestion(w, 2.0)
+    assert wallet_suggestion.get_remainder() == 2
+    assert wallet_suggestion[g1].get_remainder() == 2
+    assert wallet_suggestion[g1][a1].get_remainder() == 2
+
+    wallet_suggestion = WalletInvestmentSuggestion(w, 3.0)
+    assert wallet_suggestion.get_remainder() == 3
+    assert wallet_suggestion[g1].get_remainder() == 3
+    assert wallet_suggestion[g1][a1].get_remainder() == 3
+
+    wallet_suggestion = WalletInvestmentSuggestion(w, 4.0)
+    assert wallet_suggestion.get_remainder() == 4
+    assert wallet_suggestion[g1].get_remainder() == 4
+    assert wallet_suggestion[g1][a1].get_remainder() == 4

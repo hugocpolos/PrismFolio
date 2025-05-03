@@ -11,6 +11,9 @@ class _BaseSuggestionDict:
     def __init__(self):
         self._suggestion = dict()
 
+    def get_remainder(self):
+        return sum(x.get_remainder() for x in self._suggestion.values())
+
     def __getitem__(self, item):
         return self._suggestion[item]
 
@@ -61,6 +64,13 @@ class _AssetSuggestion(_BaseSuggestion):
 
     def get_asset(self):
         return self._item
+
+    def get_remainder(self):
+        if self.get_suggested_shares_buying() == 0:
+            return self.get_suggested_investment()
+
+        return self.get_suggested_investment() % (self.get_suggested_shares_buying() *
+                                                  self._item.get_price())
 
     def __repr__(self):
         return f"""

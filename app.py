@@ -23,7 +23,7 @@ def display_suggestion(suggestion: WalletInvestmentSuggestion):
     _display_group_layout = "{}\t Investment: R$ {:5.2f}"
     _table_header = "asset\t| investment\t| quantity\t| unit price\t| left"
     _display_asset_layout = "{}\t| R$ {:5.2f}\t| {:4d} shares\t| R$ {:5.2f}\t| R$ {:5.2f}"
-    _available_leftovers_layout = "\nTotal leftovers: R$ {:5.2f}, suggestion:"
+    _available_remainder_layout = "\nTotal remainder: R$ {:5.2f}, suggestion:"
 
     for group in suggestion:
         if group.get_suggested_investment() == 0:
@@ -40,7 +40,7 @@ def display_suggestion(suggestion: WalletInvestmentSuggestion):
                 asset.get_suggested_investment(),
                 int(asset.get_suggested_shares_buying()),
                 asset.get_asset().get_price(),
-                asset.get_leftovers()))
+                asset.get_remainder()))
 
 
 def main():
