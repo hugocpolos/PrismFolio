@@ -20,8 +20,10 @@ def dry_run_function(_):
 
 
 def display_suggestion(suggestion: WalletInvestmentSuggestion):
-    _display_group_layout = "{}: R$ {:5.2f}"
-    _display_asset_layout = "\t[{}] R$ {:5.2f} Buy {} shares"
+    _display_group_layout = "{}\t Investment: R$ {:5.2f}"
+    _table_header = "asset\t| investment\t| quantity\t| unit price\t| left"
+    _display_asset_layout = "{}\t| R$ {:5.2f}\t| {:4d} shares\t| R$ {:5.2f}\t| R$ {:5.2f}"
+    _available_leftovers_layout = "\nTotal leftovers: R$ {:5.2f}, suggestion:"
 
     for group in suggestion:
         if group.get_suggested_investment() == 0:
@@ -29,13 +31,16 @@ def display_suggestion(suggestion: WalletInvestmentSuggestion):
 
         print(_display_group_layout.format(group.get_investment_group().get_name(),
                                            group.get_suggested_investment()))
+        print(_table_header)
         for asset in group:
             if asset.get_suggested_investment() == 0:
                 continue
             print(_display_asset_layout.format(
-                asset.get_asset().get_code(),
+                asset.get_asset().get_code().ljust(6),
                 asset.get_suggested_investment(),
-                asset.get_suggested_shares_buying()))
+                int(asset.get_suggested_shares_buying()),
+                asset.get_asset().get_price(),
+                asset.get_leftovers()))
 
 
 def main():
@@ -53,7 +58,6 @@ def main():
     try:
         wallet = Wallet.from_dict(input_dict)
         wallet.update_asset_values(stock_price_acquisition_function)
-        wallet.update_asset_price_earnings(stock_price_earning_acquisitiong_function)
         suggestion = WalletInvestmentSuggestion(wallet, args.new_investment_value)
     except Exception as err:
         logging.error(err)
