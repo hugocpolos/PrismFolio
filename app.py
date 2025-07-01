@@ -21,9 +21,8 @@ def dry_run_function(_):
 
 def display_suggestion(suggestion: WalletInvestmentSuggestion):
     _display_group_layout = "{}\t Investment: R$ {:5.2f}"
-    _table_header = "asset\t| investment\t| quantity\t| unit price\t| left"
-    _display_asset_layout = "{}\t| R$ {:5.2f}\t| {:4d} shares\t| R$ {:5.2f}\t| R$ {:5.2f}"
-    _available_remainder_layout = "\nTotal remainder: R$ {:5.2f}, suggestion:"
+    _table_header = "asset\t| investment\t| quantity\t| unit price\t| left\t\t| % to buy one more"
+    _display_asset_layout = "{}\t| R$ {:5.2f}\t| {:4d} shares\t| R$ {:5.2f}\t| R$ {:5.2f}\t| {:5.2f} %"
 
     for group in suggestion:
         if group.get_suggested_investment() == 0:
@@ -40,7 +39,8 @@ def display_suggestion(suggestion: WalletInvestmentSuggestion):
                 asset.get_suggested_investment(),
                 int(asset.get_suggested_shares_buying()),
                 asset.get_asset().get_price(),
-                asset.get_remainder()))
+                asset.get_remainder(),
+                100 * (asset.get_remainder() / asset.get_asset().get_price())))
 
 
 def main():
