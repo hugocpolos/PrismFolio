@@ -73,6 +73,11 @@
                "code":"WEGE3",
                "quantity":0,
                "target_participation":9.0
+            },
+            {
+               "code":"KLBN4",
+               "quantity":0,
+               "target_participation":0.0
             }
          ]
       },

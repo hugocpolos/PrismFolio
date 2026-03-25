@@ -8,9 +8,6 @@ class TargetParticipation:
             raise ValueError("Participation should not be a negative value. "
                              f"Received {target_participation}")
 
-        if target_participation == 0.0:
-            raise ValueError("Participation should not be zero.")
-
         if target_participation > 100.0:
             raise ValueError(f"Participation value should not be higher than 100%. "
                              f"Received {target_participation}.")

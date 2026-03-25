@@ -21,26 +21,27 @@ def dry_run_function(_):
 
 def display_suggestion(suggestion: WalletInvestmentSuggestion):
     _display_group_layout = "{}\t Investment: R$ {:5.2f}"
-    _table_header = "asset\t| investment\t| quantity\t| unit price\t| left\t\t| % to buy one more"
-    _display_asset_layout = "{}\t| R$ {:5.2f}\t| {:4d} shares\t| R$ {:5.2f}\t| R$ {:5.2f}\t| {:5.2f} %"
+    _table_header = "asset\t| investment\t| quantity\t| unit price\t| left\t\t| % to buy one more | current participation"
+    _display_asset_layout = "{}\t| R$ {:5.2f}\t| {:4d} shares\t| R$ {:5.2f}\t| R$ {:5.2f}\t| {:15.2f} % | {:2.2f} %"
 
     for group in suggestion:
         if group.get_suggested_investment() == 0:
-            continue
+            pass
 
         print(_display_group_layout.format(group.get_investment_group().get_name(),
                                            group.get_suggested_investment()))
         print(_table_header)
         for asset in group:
             if asset.get_suggested_investment() == 0:
-                continue
+                pass
             print(_display_asset_layout.format(
                 asset.get_asset().get_code().ljust(6),
                 asset.get_suggested_investment(),
                 int(asset.get_suggested_shares_buying()),
                 asset.get_asset().get_price(),
                 asset.get_remainder(),
-                100 * (asset.get_remainder() / asset.get_asset().get_price())))
+                100 * (asset.get_remainder() / asset.get_asset().get_price()),
+                asset.get_asset().get_current_participation()))
 
 
 def main():

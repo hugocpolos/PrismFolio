@@ -42,9 +42,15 @@ class Asset(TargetParticipation):
     def get_quantity(self):
         return self._quantity
 
+    def get_current_participation(self):
+        return self._current_participation
+
     def buy(self, quantity: int):
         self._check_quantity_argument(quantity)
         self._quantity += quantity
+
+    def update_current_participation(self, total_budget):
+        self._current_participation = 100 * (self.get_total_amount() / total_budget)
 
     def update_price(self, pricing_function):
         try:

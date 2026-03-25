@@ -30,6 +30,10 @@ class InvestmentGroup(TargetParticipation):
         for asset in self._assets:
             asset.update_price(pricing_function)
 
+        total_amount = self.get_total_amount()
+        for asset in self._assets:
+            asset.update_current_participation(total_amount)
+
     def update_asset_price_earnings(self, price_earnings_function):
         for asset in self._assets:
             asset.update_price_earnings(price_earnings_function)
